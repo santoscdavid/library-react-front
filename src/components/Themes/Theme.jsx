@@ -1,11 +1,14 @@
-export const Theme = {
+import { createTheme } from "@mui/material";
+import { pink, purple } from "@mui/material/colors";
+
+export const Theme = createTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#3f51b5',
+      main: purple[500],
     },
     secondary: {
-      main: '#c9004a',
+      main: pink[600],
     },
   },
-};
+});

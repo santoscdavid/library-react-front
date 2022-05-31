@@ -1,7 +1,7 @@
 import { Grid, Paper, Toolbar, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 
-export default function Dashboard() {
+export default function Books() {
     return (
         <Box
             component="main"
@@ -20,7 +20,7 @@ export default function Dashboard() {
                             flexDirection: 'column',
                             height: 240
                         }}>
-                        <Typography>Dashboard</Typography>
+                        <Typography>Books</Typography>
                     </Paper>
                 </Grid>
             </Container>
