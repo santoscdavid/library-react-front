@@ -3,6 +3,7 @@ import {
     Button,
     ButtonGroup,
     Grid,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -89,20 +90,18 @@ export default function Publishers() {
                                 </TableHead>
                                 <TableBody>
                                     {publishersList.map((row) => (
-                                        <TableRow
-                                            key="row.id"
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableRow key="row.id">
                                             <TableCell>{row.id}</TableCell>
                                             <TableCell>{row.nome}</TableCell>
                                             <TableCell>{row.cidade}</TableCell>
                                             <TableCell align="center">
                                                 <ButtonGroup color="secondary" size="small" variant="outlined">
-                                                    <Button color="warning" endIcon={<Edit />}>
-                                                        Editar
-                                                    </Button>
-                                                    <Button color="error" endIcon={<Delete />}>
-                                                        Excluir
-                                                    </Button>
+                                                    <IconButton color="warning">
+                                                        <Edit />
+                                                    </IconButton>
+                                                    <IconButton color="error">
+                                                        <Delete />
+                                                    </IconButton>
                                                 </ButtonGroup>
                                             </TableCell>
                                         </TableRow>
