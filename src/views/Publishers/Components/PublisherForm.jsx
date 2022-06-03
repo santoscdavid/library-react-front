@@ -1,10 +1,19 @@
-import { Dialog, Slide, DialogTitle, DialogContent, TextField, DialogActions, Button, Box } from '@mui/material';
+import {
+    styled,
+    Dialog,
+    Slide,
+    DialogTitle,
+    DialogContent,
+    TextField,
+    DialogActions,
+    Button,
+    Box
+} from '@mui/material';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { forwardRef, useContext } from 'react';
 import { PublishersContext } from '../../../context/PublishersContext';
-import styled from '@emotion/styled';
 
 export default function PublishersForm() {
     const validationSchema = yup.object().shape({
@@ -73,7 +82,7 @@ export default function PublishersForm() {
                     <Button color="error" onClick={cancelForm}>
                         Cancelar
                     </Button>
-                    <Button type="submit" color="success" onClick={() => {}}>
+                    <Button type="submit" color="success">
                         Salvar
                     </Button>
                 </DialogActions>

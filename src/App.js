@@ -42,7 +42,7 @@ function App() {
                     </Container>
                 </DrawerContextProvider>
                 <ToastContainer
-                    position="bottom-left"
+                    position="bottom-right"
                     autoClose={3000}
                     hideProgressBar={false}
                     newestOnTop={false}
@@ -51,7 +51,6 @@ function App() {
                     pauseOnFocusLoss
                     draggable
                     pauseOnHover
-                    theme="dark"
                 />
             </Box>
         </ThemeProvider>

@@ -1,4 +1,4 @@
-import { Add, Delete, Edit, MenuBook } from '@mui/icons-material';
+import { Delete, Edit, MenuBook } from '@mui/icons-material';
 import {
     Container,
     ButtonGroup,
@@ -13,8 +13,7 @@ import {
     TableRow,
     Typography,
     Box,
-    Toolbar,
-    Button
+    Toolbar
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
@@ -28,8 +27,7 @@ export default function PublishersTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const { show, handlerShow, handleClose, savePublisher } = useContext(PublishersContext);
-    const { publishers } = useContext(PublishersContext);
+    const { publishers, handlerShow, handlerEdit, handlerDelete } = useContext(PublishersContext);
 
     return (
         <Box
@@ -64,14 +62,14 @@ export default function PublishersTable() {
                                             <MenuBook
                                                 sx={{
                                                     mr: 1
-                                                    //     mt: '2px',
                                                 }}
                                             />
-                                            <Typography fontSize={20}>Editoras</Typography>
+                                            <Typography fontSize={21}>Editoras</Typography>
                                         </TableCell>
                                         <TableCell colSpan={3} align="right">
                                             <AddButtom
                                                 sx={{
+                                                    mt: 2,
                                                     alignContent: 'center',
                                                     alignItems: 'center'
                                                 }}
@@ -101,10 +99,14 @@ export default function PublishersTable() {
                                             <TableCell>{row.cidade}</TableCell>
                                             <TableCell align="center">
                                                 <ButtonGroup color="secondary" size="small" variant="outlined">
-                                                    <IconButton color="warning" onClick={() => console.log(row.id)}>
+                                                    <IconButton
+                                                        color="warning"
+                                                        onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
                                                         <Edit />
                                                     </IconButton>
-                                                    <IconButton color="error" onClick={() => console.log(row.id)}>
+                                                    <IconButton
+                                                        color="error"
+                                                        onClick={() => handlerDelete(row.id, row.nome, row.cidade)}>
                                                         <Delete />
                                                     </IconButton>
                                                 </ButtonGroup>

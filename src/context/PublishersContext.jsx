@@ -2,14 +2,16 @@ import { createContext, useEffect, useState } from 'react';
 import api from '../configs/api';
 import { toast } from 'react-toastify';
 import PublishersForm from '../views/Publishers/Components/PublisherForm';
-import { Add } from '@mui/icons-material';
+import PublisherDeleteDialog from '../views/Publishers/Components/PublisherDeleteDialog';
 
 export const PublishersContext = createContext();
 
 function PublishersContextProvider({ children }) {
     const [publishers, setPublishers] = useState([]);
     const [publisherDefaultFormValues, setPublisherDefaultFormValues] = useState({});
+    const [publisherDeleteValues, setPublisherDeleteValues] = useState({});
     const [show, setShow] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [titleForm, setTitleForm] = useState('');
     const [id, setId] = useState('');
 
@@ -46,7 +48,7 @@ function PublishersContextProvider({ children }) {
 
     const savePublisher = (data) => {
         if (id) {
-            api.put('/editora' + id, {
+            api.put('/editora/' + id, {
                 id: id,
                 nome: data.nome,
                 cidade: data.cidade
@@ -81,11 +83,57 @@ function PublishersContextProvider({ children }) {
         }
     };
 
+    const handlerDelete = (publisherId, publisherName, publisherCity) => {
+        const deleteValues = {
+            id: publisherId,
+            nome: publisherName,
+            cidade: publisherCity
+        };
+        setPublisherDeleteValues(deleteValues);
+        setShowDeleteDialog(true);
+    };
+
+    const closeDeleteConfirm = () => {
+        if (id) {
+            setId('');
+        }
+        setShowDeleteDialog(false);
+    };
+    const deletePublisher = () => {
+        api.delete('editora/' + publisherDeleteValues.id)
+            .then((response) => {
+                if (response !== null) {
+                    closeDeleteConfirm();
+                    getPublishers();
+                    toast.success('Deletada com sucesso!');
+                }
+            })
+            .catch((response) => {
+                const error = response.response.data.error;
+                toast.error(error);
+                closeDeleteConfirm();
+            });
+    };
+
     return (
         <PublishersContext.Provider
-            value={{ publishers, show, handlerShow, handlerEdit, handleClose, savePublisher, titleForm }}>
+            value={{
+                publishers,
+                show,
+                handlerShow,
+                handlerEdit,
+                handleClose,
+                savePublisher,
+                titleForm,
+                publisherDefaultFormValues,
+                handlerDelete,
+                showDeleteDialog,
+                deletePublisher,
+                closeDeleteConfirm
+            }}>
             {children}
             {show && <PublishersForm />}
+            {showDeleteDialog && <PublisherDeleteDialog />}
         </PublishersContext.Provider>
     );
 }
