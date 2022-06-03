@@ -32,6 +32,10 @@ function PublishersContextProvider({ children }) {
     };
 
     const handleClose = () => {
+        setPublisherDefaultFormValues({});
+        if (id) {
+            setId('');
+        }
         setShow(false);
     };
 
@@ -61,8 +65,9 @@ function PublishersContextProvider({ children }) {
                     }
                 })
                 .catch((response) => {
-                    const error = response.response.data.error;
-                    toast.error(error);
+                    // const error = response.data.error;
+                    // toast.error(error);
+                    console.log(response);
                 });
         } else {
             api.post('editora', {
@@ -76,9 +81,10 @@ function PublishersContextProvider({ children }) {
                         toast.success('Salvo com sucesso!');
                     }
                 })
-                .catch((response) => {
-                    const error = response.response.data.error;
-                    toast.error(error);
+                .catch((res) => {
+                    console.log(res.response.data.errors);
+                    // const error = response.response.data.error;
+                    // toast.error(error);
                 });
         }
     };
