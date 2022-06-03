@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Theme } from './components/Themes/Theme';
 import { ThemeProvider, Box, Container, CssBaseline, Toolbar } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 import DrawerContextProvider from './context/DrawerContext';
 import Appbar from './components/Appbar/Appbar';
 import Drawer from './components/Drawer/Drawer';
@@ -24,7 +25,7 @@ function App() {
                             backgroundColor: (theme) =>
                                 theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
                             flexGrow: 1,
-                            height: '100vh',
+                            height: 'auto',
                             overflow: 'auto'
                         }}></Box>
                     <Toolbar />
@@ -40,6 +41,17 @@ function App() {
                         </Router>
                     </Container>
                 </DrawerContextProvider>
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </Box>
         </ThemeProvider>
     );
