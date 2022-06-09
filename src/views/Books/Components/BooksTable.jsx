@@ -30,7 +30,7 @@ export default function BooksTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const { books } = useContext(BooksContext);
+    const { books, handlerShow } = useContext(BooksContext);
 
     return (
         <Box
@@ -66,7 +66,7 @@ export default function BooksTable() {
                                                     mr: 1
                                                 }}
                                             />
-                                            <Typography fontSize={21}>Editoras</Typography>
+                                            <Typography fontSize={21}>Livros</Typography>
                                         </TableCell>
                                         <TableCell colSpan={6} align="right">
                                             <AddButtom
@@ -75,7 +75,7 @@ export default function BooksTable() {
                                                     alignContent: 'center',
                                                     alignItems: 'center'
                                                 }}
-                                                // click={handlerShow}
+                                                click={handlerShow}
                                             />
                                         </TableCell>
                                     </TableRow>

@@ -14,16 +14,30 @@ function PublishersContextProvider({ children }) {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [titleForm, setTitleForm] = useState('');
     const [id, setId] = useState('');
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalCount, setCountItens] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+    const [pageSize, setPageSize] = useState(0);
 
     const getPublishers = () => {
-        api.get('/editora').then(({ data }) => {
-            const editoras = data;
+        api.get('/editora?PageNumber=' + page + '&PageSize=' + rowsPerPage).then((res) => {
+            const editoras = res.data;
+            var paginate = JSON.parse(res.headers.pagination);
+
+            setCountItens(paginate.totalCount);
+            setCurrentPage(paginate.currentPage);
+            setTotalPage(paginate.totalPage);
+            setPageSize(paginate.pageSize);
+
             setPublishers(editoras);
         });
     };
 
     useEffect(() => {
         getPublishers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handlerShow = () => {
@@ -65,9 +79,8 @@ function PublishersContextProvider({ children }) {
                     }
                 })
                 .catch((response) => {
-                    // const error = response.data.error;
-                    // toast.error(error);
-                    console.log(response);
+                    const error = response.data.error;
+                    toast.error(error);
                 });
         } else {
             api.post('editora', {
@@ -83,8 +96,8 @@ function PublishersContextProvider({ children }) {
                 })
                 .catch((res) => {
                     console.log(res.response.data.errors);
-                    // const error = response.response.data.error;
-                    // toast.error(error);
+                    const error = res.response.data.error;
+                    toast.error(error);
                 });
         }
     };
@@ -121,21 +134,63 @@ function PublishersContextProvider({ children }) {
             });
     };
 
+    const paginate = (pag, row) => {
+        api.get('/editora?PageNumber=' + pag + '&PageSize=' + row).then((res) => {
+            const editoras = res.data;
+            var page = JSON.parse(res.headers.pagination);
+
+            setCountItens(page.totalCount);
+            setCurrentPage(page.currentPage);
+            setTotalPage(page.totalPage);
+            setPageSize(page.pageSize);
+
+            setPublishers(editoras);
+        });
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+        getPublishers();
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(event.target.value);
+        setPage(1);
+        // getPublishers();
+        paginate(1, event.target.value);
+    };
+
+    const handleSearch = (data) => {
+        api.get('/editora?PageNumber=1&PageSize=100&Nome=' + data.nome + '&Cidade=' + data.cidade).then((res) => {
+            setPublishers(res.data);
+        });
+    };
+
     return (
         <PublishersContext.Provider
             value={{
                 publishers,
+                getPublishers,
                 show,
                 handlerShow,
+                handleSearch,
+                page,
+                rowsPerPage,
                 handlerEdit,
                 handleClose,
+                totalCount,
                 savePublisher,
+                setCountItens,
                 titleForm,
                 publisherDefaultFormValues,
+                handleChangePage,
+                handleChangeRowsPerPage,
                 handlerDelete,
                 showDeleteDialog,
                 deletePublisher,
-                closeDeleteConfirm
+                closeDeleteConfirm,
+                currentPage,
+                totalPage,
+                pageSize
             }}>
             {children}
             {show && <PublishersForm />}
