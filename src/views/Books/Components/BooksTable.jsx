@@ -13,11 +13,16 @@ import {
     TableRow,
     Typography,
     Box,
-    Toolbar
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
 import { BooksContext } from '../../../context/BooksContext';
+import BooksFilter from './BooksFilter';
+import Loading from '../../../components/Loading/Loading';
 
 export default function BooksTable() {
     const cols = [
@@ -30,18 +35,18 @@ export default function BooksTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const { books, handlerShow } = useContext(BooksContext);
+    const { books, handlerShow, handlerEdit, handlerDelete, rowsPerPage, handleChangeRowsPerPage } =
+        useContext(BooksContext);
 
     return (
         <Box
             component="main"
             sx={{
                 flexGrow: 1,
-                height: '90vh',
-                overflow: 'auto'
+                mt: 7
             }}>
-            <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="xl" sx={{ height: '85vh' }}>
+                <BooksFilter />
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper
                         sx={{
@@ -51,7 +56,7 @@ export default function BooksTable() {
                             height: 'auto'
                         }}>
                         <TableContainer sx={{ maxHeight: 'auto' }}>
-                            <Table stickyHeader>
+                            <Table stickyHeader size="small">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell
@@ -66,7 +71,7 @@ export default function BooksTable() {
                                                     mr: 1
                                                 }}
                                             />
-                                            <Typography fontSize={21}>Livros</Typography>
+                                            <Typography fontSize={20}>Livros</Typography>
                                         </TableCell>
                                         <TableCell colSpan={6} align="right">
                                             <AddButtom
@@ -92,31 +97,70 @@ export default function BooksTable() {
                                         ))}
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>
-                                    {books.map((row) => (
-                                        <TableRow key={row.id}>
-                                            <TableCell colSpan={1}>{row.id}</TableCell>
-                                            <TableCell>{row.nome}</TableCell>
-                                            <TableCell>{row.autor}</TableCell>
-                                            <TableCell>{row.editora.nome}</TableCell>
-                                            <TableCell>{row.lancamento}</TableCell>
-                                            <TableCell>{row.quantidade}</TableCell>
-                                            <TableCell align="center">
-                                                <ButtonGroup color="secondary" size="small" variant="outlined">
-                                                    <IconButton color="warning">
-                                                        {/* onClick={() => handlerEdit(row.id, row.nome, row.cidade)} */}
-                                                        <Edit />
-                                                    </IconButton>
-                                                    <IconButton color="error">
-                                                        <Delete />
-                                                        {/* onClick={() => handlerDelete(row.id, row.nome, row.cidade)} */}
-                                                    </IconButton>
-                                                </ButtonGroup>
-                                            </TableCell>
+                                {books.length ? (
+                                    <TableBody>
+                                        {books.map((row) => (
+                                            <TableRow key={row.id}>
+                                                <TableCell colSpan={1}>{row.id}</TableCell>
+                                                <TableCell>{row.nome}</TableCell>
+                                                <TableCell>{row.autor}</TableCell>
+                                                <TableCell>{row.editora.nome}</TableCell>
+                                                <TableCell>{row.lancamento}</TableCell>
+                                                <TableCell>{row.quantidade}</TableCell>
+                                                <TableCell align="center">
+                                                    <ButtonGroup color="secondary" size="small" variant="outlined">
+                                                        <IconButton
+                                                            color="warning"
+                                                            onClick={() =>
+                                                                handlerEdit(
+                                                                    row.id,
+                                                                    row.nome,
+                                                                    row.editora.id,
+                                                                    row.autor,
+                                                                    row.lancamento,
+                                                                    row.quantidade
+                                                                )
+                                                            }>
+                                                            <Edit />
+                                                        </IconButton>
+                                                        <IconButton color="error" onClick={() => handlerDelete(row.id)}>
+                                                            <Delete />
+                                                        </IconButton>
+                                                    </ButtonGroup>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                ) : (
+                                    <TableBody>
+                                        <TableRow>
+                                            {cols.map((col, i) => (
+                                                <TableCell key={i}>
+                                                    <Loading />
+                                                </TableCell>
+                                            ))}
                                         </TableRow>
-                                    ))}
-                                </TableBody>
+                                    </TableBody>
+                                )}
                             </Table>
+                            <Grid container>
+                                <Grid item>
+                                    <FormControl sx={{ mt: 2, mb: 1, ml: 1, minWidth: '140px' }} size="small">
+                                        <InputLabel>Linhas por página</InputLabel>
+                                        <Select
+                                            autoWidth
+                                            value={rowsPerPage}
+                                            label="rowsPerPage"
+                                            onChange={handleChangeRowsPerPage}>
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={25}>25</MenuItem>
+                                            <MenuItem value={50}>50</MenuItem>
+                                            <MenuItem value={100}>100</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
                         </TableContainer>
                     </Paper>
                 </Grid>

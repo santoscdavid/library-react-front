@@ -22,17 +22,21 @@ function PublishersContextProvider({ children }) {
     const [pageSize, setPageSize] = useState(0);
 
     const getPublishers = () => {
-        api.get('/editora?PageNumber=' + page + '&PageSize=' + rowsPerPage).then((res) => {
-            const editoras = res.data;
-            var paginate = JSON.parse(res.headers.pagination);
+        api.get('/editora?PageNumber=' + page + '&PageSize=' + rowsPerPage)
+            .then((res) => {
+                const editoras = res.data;
+                var paginate = JSON.parse(res.headers.pagination);
 
-            setCountItens(paginate.totalCount);
-            setCurrentPage(paginate.currentPage);
-            setTotalPage(paginate.totalPage);
-            setPageSize(paginate.pageSize);
+                setCountItens(paginate.totalCount);
+                setCurrentPage(paginate.currentPage);
+                setTotalPage(paginate.totalPage);
+                setPageSize(paginate.pageSize);
 
-            setPublishers(editoras);
-        });
+                setPublishers(editoras);
+            })
+            .catch((res) => {
+                toast.error('Não foi possivel conectar com o banco de dados');
+            });
     };
 
     useEffect(() => {
@@ -116,6 +120,7 @@ function PublishersContextProvider({ children }) {
         if (id) {
             setId('');
         }
+        setPublisherDeleteValues({});
         setShowDeleteDialog(false);
     };
     const deletePublisher = () => {

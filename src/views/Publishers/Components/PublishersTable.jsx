@@ -32,14 +32,8 @@ export default function PublishersTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const {
-        publishers,
-        handlerShow,
-        handlerEdit,
-        handlerDelete,
-        handleChangeRowsPerPage,
-        rowsPerPage
-    } = useContext(PublishersContext);
+    const { publishers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
+        useContext(PublishersContext);
 
     return (
         <Box
@@ -66,7 +60,7 @@ export default function PublishersTable() {
                                             <Grid container>
                                                 <Grid item xs={10}>
                                                     <Typography
-                                                        fontSize={21}
+                                                        fontSize={20}
                                                         sx={{
                                                             my: 1,
                                                             display: 'flex',
@@ -136,33 +130,35 @@ export default function PublishersTable() {
                                     </TableBody>
                                 ) : (
                                     <TableBody>
-                                        {[...Array(3)].map((e, i) => (
-                                            <TableRow key={i}>
-                                                {cols.map((col, i) => (
-                                                    <TableCell key={i}>
-                                                        <Loading />
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))}
+                                        <TableRow>
+                                            {cols.map((col, i) => (
+                                                <TableCell key={i}>
+                                                    <Loading />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
                                     </TableBody>
                                 )}
                             </Table>
-                            <FormControl sx={{ mt: 2, ml: 2, mb: 1, minWidth: '140px' }} size="small">
-                                <InputLabel>Linhas por página</InputLabel>
-                                <Select
-                                    // variant="filled"
-                                    autoWidth
-                                    value={rowsPerPage}
-                                    label="rowsPerPage"
-                                    onChange={handleChangeRowsPerPage}>
-                                    <MenuItem value={5}>5</MenuItem>
-                                    <MenuItem value={10}>10</MenuItem>
-                                    <MenuItem value={25}>25</MenuItem>
-                                    <MenuItem value={50}>50</MenuItem>
-                                    <MenuItem value={100}>100</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <Grid container>
+                                <Grid item>
+                                    <FormControl sx={{ mt: 2, mb: 1, ml: 1, minWidth: '140px' }} size="small">
+                                        <InputLabel>Linhas por página</InputLabel>
+                                        <Select
+                                            // variant="filled"
+                                            autoWidth
+                                            value={rowsPerPage}
+                                            label="rowsPerPage"
+                                            onChange={handleChangeRowsPerPage}>
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={25}>25</MenuItem>
+                                            <MenuItem value={50}>50</MenuItem>
+                                            <MenuItem value={100}>100</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
                         </TableContainer>
                     </Paper>
                 </Grid>
