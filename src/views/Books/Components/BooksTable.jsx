@@ -1,4 +1,4 @@
-import { Apartment, Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, MenuBook } from '@mui/icons-material';
 import {
     Container,
     ButtonGroup,
@@ -20,20 +20,23 @@ import {
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { BooksContext } from '../../../context/BooksContext';
+import BooksFilter from './BooksFilter';
 import Loading from '../../../components/Loading/Loading';
-import PublishersFilter from './PublishersFilter';
 
-export default function PublishersTable() {
+export default function BooksTable() {
     const cols = [
         { title: 'Id', align: 'left' },
         { title: 'Nome', align: 'left' },
-        { title: 'Cidade', align: 'left' },
+        { title: 'Autor', align: 'left' },
+        { title: 'Editora', align: 'left' },
+        { title: 'Lançamento', align: 'left' },
+        { title: 'Quantidade', align: 'left' },
         { title: 'Opções', align: 'center' }
     ];
 
-    const { publishers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
-        useContext(PublishersContext);
+    const { books, handlerShow, handlerEdit, handlerDelete, rowsPerPage, handleChangeRowsPerPage } =
+        useContext(BooksContext);
 
     return (
         <Box
@@ -43,51 +46,42 @@ export default function PublishersTable() {
                 mt: 7
             }}>
             <Container maxWidth="xl" sx={{ height: '85vh' }}>
-                <PublishersFilter />
+                <BooksFilter />
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper
                         sx={{
-                            p: 1,
+                            p: 2,
                             display: 'flex',
                             flexDirection: 'column',
-                            height: '100%'
+                            height: 'auto'
                         }}>
-                        <TableContainer sx={{ maxHeight: 'auto', overflow: 'auto' }}>
+                        <TableContainer sx={{ maxHeight: 'auto' }}>
                             <Table stickyHeader size="small">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell colSpan={12}>
-                                            <Grid container>
-                                                <Grid item xs={10}>
-                                                    <Typography
-                                                        fontSize={20}
-                                                        sx={{
-                                                            my: 1,
-                                                            display: 'flex',
-                                                            mt: 1,
-                                                            alignContent: 'center',
-                                                            alignItems: 'center'
-                                                        }}>
-                                                        <Apartment
-                                                            sx={{
-                                                                mr: 1
-                                                            }}
-                                                        />
-                                                        Editoras
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xs={2}>
-                                                    <div
-                                                        sx={{
-                                                            my: 1,
-                                                            display: 'flex',
-                                                            alignContent: 'center',
-                                                            alignItems: 'center'
-                                                        }}>
-                                                        <AddButtom click={handlerShow} />
-                                                    </div>
-                                                </Grid>
-                                            </Grid>
+                                        <TableCell
+                                            sx={{
+                                                display: 'flex',
+                                                mt: 1,
+                                                alignContent: 'center',
+                                                alignItems: 'center'
+                                            }}>
+                                            <MenuBook
+                                                sx={{
+                                                    mr: 1
+                                                }}
+                                            />
+                                            <Typography fontSize={20}>Livros</Typography>
+                                        </TableCell>
+                                        <TableCell colSpan={6} align="right">
+                                            <AddButtom
+                                                sx={{
+                                                    mt: 2,
+                                                    alignContent: 'center',
+                                                    alignItems: 'center'
+                                                }}
+                                                click={handlerShow}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -95,7 +89,6 @@ export default function PublishersTable() {
                                             <TableCell
                                                 align={col.align}
                                                 key={col.title}
-                                                style={{ top: 57 }}
                                                 sx={{
                                                     fontWeight: 'bold'
                                                 }}>
@@ -104,23 +97,33 @@ export default function PublishersTable() {
                                         ))}
                                     </TableRow>
                                 </TableHead>
-                                {publishers.length ? (
+                                {books.length ? (
                                     <TableBody>
-                                        {publishers.map((row) => (
+                                        {books.map((row) => (
                                             <TableRow key={row.id}>
-                                                <TableCell>{row.id}</TableCell>
+                                                <TableCell colSpan={1}>{row.id}</TableCell>
                                                 <TableCell>{row.nome}</TableCell>
-                                                <TableCell>{row.cidade}</TableCell>
+                                                <TableCell>{row.autor}</TableCell>
+                                                <TableCell>{row.editora.nome}</TableCell>
+                                                <TableCell>{row.lancamento}</TableCell>
+                                                <TableCell>{row.quantidade}</TableCell>
                                                 <TableCell align="center">
                                                     <ButtonGroup color="secondary" size="small" variant="outlined">
                                                         <IconButton
                                                             color="warning"
-                                                            onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
+                                                            onClick={() =>
+                                                                handlerEdit(
+                                                                    row.id,
+                                                                    row.nome,
+                                                                    row.editora.id,
+                                                                    row.autor,
+                                                                    row.lancamento,
+                                                                    row.quantidade
+                                                                )
+                                                            }>
                                                             <Edit />
                                                         </IconButton>
-                                                        <IconButton
-                                                            color="error"
-                                                            onClick={() => handlerDelete(row.id, row.nome, row.cidade)}>
+                                                        <IconButton color="error" onClick={() => handlerDelete(row.id)}>
                                                             <Delete />
                                                         </IconButton>
                                                     </ButtonGroup>
@@ -145,7 +148,6 @@ export default function PublishersTable() {
                                     <FormControl sx={{ mt: 2, mb: 1, ml: 1, minWidth: '140px' }} size="small">
                                         <InputLabel>Linhas por página</InputLabel>
                                         <Select
-                                            // variant="filled"
                                             autoWidth
                                             value={rowsPerPage}
                                             label="rowsPerPage"
