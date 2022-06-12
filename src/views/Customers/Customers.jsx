@@ -1,32 +1,25 @@
-import { Grid, Paper, Toolbar, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
+import CustomersContextProvider from '../../context/CustomersContext';
+import CustomersTable from './Components/CustomersTable';
+import CustomersFilter from './Components/CustomersFilter';
 
 export default function Customers() {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto'
-                }}>
-                <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                    <Grid item xs={12} md={8} lg={9}>
-                        <Paper
-                            sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                height: 240
-                            }}>
-                            <Typography>Customers</Typography>
-                        </Paper>
+            <CustomersContextProvider>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        mt: 6
+                    }}>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <CustomersFilter />
+                        <CustomersTable />
                     </Grid>
-                </Container>
-            </Box>
+                </Box>
+            </CustomersContextProvider>
         </motion.div>
     );
 }

@@ -3,11 +3,11 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextF
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { BooksContext } from '../../../context/BooksContext';
 import { useContext } from 'react';
+import { CustomersContext } from '../../../context/CustomersContext';
 
-export default function BooksFilter() {
-    const { getBooks, handleSearch } = useContext(BooksContext);
+export default function CustomersFilter() {
+    const { getCustomers, handleSearch } = useContext(CustomersContext);
 
     const validationSchema = yup.object().shape({
         nome: yup.string(),
@@ -28,7 +28,7 @@ export default function BooksFilter() {
         resetField('nome');
         resetField('autor');
         resetField('lancamento');
-        getBooks();
+        getCustomers();
     };
 
     return (
@@ -51,7 +51,6 @@ export default function BooksFilter() {
                         <Grid item xs={3}>
                             <TextField
                                 id="nome"
-                                f
                                 name="nome"
                                 label="Nome"
                                 {...register('nome')}
@@ -62,28 +61,38 @@ export default function BooksFilter() {
                         </Grid>
                         <Grid item xs={3}>
                             <TextField
-                                id="autor"
-                                name="autor"
-                                label="Autor"
-                                {...register('autor')}
+                                id="email"
+                                name="email"
+                                label="Email"
+                                {...register('email')}
                                 size="small"
                                 fullWidth
                             />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={2}>
                             <TextField
-                                id="lancamento"
-                                name="lancamento"
-                                label="Lançamento"
-                                {...register('lancamento')}
+                                id="cidade"
+                                name="cidade"
+                                label="Cidade"
+                                {...register('cidade')}
                                 size="small"
                                 fullWidth
-                                autoComplete="off"
                             />
                         </Grid>
+                        <Grid item xs={2}>
+                            <TextField
+                                id="endereco"
+                                name="endereco"
+                                label="Endereço"
+                                {...register('endereco')}
+                                size="small"
+                                fullWidth
+                            />
+                        </Grid>
+
                         <Grid
                             item
-                            xs={3}
+                            xs={2}
                             sx={{
                                 alignItems: 'center',
                                 JustifyContent: 'center',

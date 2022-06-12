@@ -1,6 +1,5 @@
 import { Apartment, Delete, Edit } from '@mui/icons-material';
 import {
-    Container,
     ButtonGroup,
     Grid,
     IconButton,
@@ -12,7 +11,6 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Box,
     FormControl,
     InputLabel,
     Select,
@@ -20,19 +18,21 @@ import {
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { CustomersContext } from '../../../context/CustomersContext';
 import Loading from '../../../components/Loading/Loading';
 
-export default function PublishersTable() {
+export default function CustomersTable() {
     const cols = [
         { title: 'Id', align: 'left' },
         { title: 'Nome', align: 'left' },
+        { title: 'Email', align: 'left' },
         { title: 'Cidade', align: 'left' },
+        { title: 'Endereço', align: 'left' },
         { title: 'Opções', align: 'center' }
     ];
 
-    const { publishers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
-        useContext(PublishersContext);
+    const { customers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
+        useContext(CustomersContext);
 
     return (
         <Paper
@@ -63,7 +63,7 @@ export default function PublishersTable() {
                                                     mr: 1
                                                 }}
                                             />
-                                            Editoras
+                                            Clientes
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={2}>
@@ -94,13 +94,15 @@ export default function PublishersTable() {
                             ))}
                         </TableRow>
                     </TableHead>
-                    {publishers.length ? (
+                    {customers.length ? (
                         <TableBody>
-                            {publishers.map((row) => (
+                            {customers.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.nome}</TableCell>
+                                    <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.cidade}</TableCell>
+                                    <TableCell>{row.endereco}</TableCell>
                                     <TableCell align="center">
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
                                             <IconButton
