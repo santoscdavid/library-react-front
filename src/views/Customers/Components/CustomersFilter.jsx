@@ -11,23 +11,26 @@ export default function CustomersFilter() {
 
     const validationSchema = yup.object().shape({
         nome: yup.string(),
-        autor: yup.string(),
-        lancamento: yup.string()
+        email: yup.string(),
+        cidade: yup.string(),
+        endereco: yup.string()
     });
 
     const { register, handleSubmit, resetField } = useForm({
         defaultValues: {
             nome: '',
-            autor: '',
-            lancamento: ''
+            email: '',
+            cidade: '',
+            endereco: ''
         },
         resolver: yupResolver(validationSchema)
     });
 
     const cleanFilter = () => {
         resetField('nome');
-        resetField('autor');
-        resetField('lancamento');
+        resetField('email');
+        resetField('cidade');
+        resetField('endereco');
         getCustomers();
     };
 

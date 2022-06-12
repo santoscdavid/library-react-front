@@ -20,7 +20,6 @@ function CustomersContextProvider({ children }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [pageSize, setPageSize] = useState(0);
-    const [selectValue, setSelectValue] = useState(0);
 
     const getCustomers = () => {
         api.get('/usuario?PageNumber=' + page + '&PageSize=' + rowsPerPage)
@@ -45,7 +44,7 @@ function CustomersContextProvider({ children }) {
     }, []);
 
     const handlerShow = () => {
-        setTitleForm('Novo cliente');
+        setTitleForm('Novo Cliente');
         setShow(true);
     };
 
@@ -58,17 +57,16 @@ function CustomersContextProvider({ children }) {
     };
 
     const handlerEdit = (id, nome, email, cidade, endereco) => {
-        const book = {
+        const cliente = {
             nome: nome,
             email: email,
             cidade: cidade,
             endereco: endereco
         };
-        console.log(book);
-        setCustomersDefaultFormValues(book);
+        console.log(cliente);
+        setCustomersDefaultFormValues(cliente);
         setId(id);
-        setSelectValue(book.editora);
-        setTitleForm('Editar cliente');
+        setTitleForm('Editar Cliente');
         setShow(true);
     };
 
@@ -105,7 +103,6 @@ function CustomersContextProvider({ children }) {
                         handleClose();
                         getCustomers();
                         toast.success('Salvo com sucesso!');
-                        setSelectValue(0);
                     }
                 })
                 .catch((res) => {
@@ -116,9 +113,9 @@ function CustomersContextProvider({ children }) {
         }
     };
 
-    const handlerDelete = (bookId) => {
+    const handlerDelete = (customersId) => {
         const deleteValues = {
-            id: bookId
+            id: customersId
         };
         setCustomersDeleteValues(deleteValues);
         setShowDeleteDialog(true);
@@ -176,10 +173,12 @@ function CustomersContextProvider({ children }) {
         api.get(
             '/usuario?PageNumber=1&PageSize=100&Nome=' +
                 data.nome +
-                '&Autor=' +
-                data.autor +
-                '&Lancamento=' +
-                data.lancamento
+                '&email=' +
+                data.email +
+                '&Cidade=' +
+                data.cidade +
+                '&Endereco=' +
+                data.endereco
         )
             .then((res) => {
                 setCustomers(res.data);
@@ -209,8 +208,6 @@ function CustomersContextProvider({ children }) {
                 currentPage,
                 totalPage,
                 pageSize,
-                selectValue,
-                setSelectValue,
                 rowsPerPage,
                 handleChangePage,
                 handleChangeRowsPerPage,

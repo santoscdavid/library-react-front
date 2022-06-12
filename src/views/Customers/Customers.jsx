@@ -12,7 +12,7 @@ export default function Customers() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        mt: 6
+                        mt: 7
                     }}>
                     <Grid item xs={12} md={12} lg={12}>
                         <CustomersFilter />

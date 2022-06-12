@@ -107,12 +107,12 @@ export default function CustomersTable() {
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
                                             <IconButton
                                                 color="warning"
-                                                onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
+                                                onClick={() =>
+                                                    handlerEdit(row.id, row.nome, row.email, row.cidade, row.endereco)
+                                                }>
                                                 <Edit />
                                             </IconButton>
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => handlerDelete(row.id, row.nome, row.cidade)}>
+                                            <IconButton color="error" onClick={() => handlerDelete(row.id)}>
                                                 <Delete />
                                             </IconButton>
                                         </ButtonGroup>
