@@ -1,4 +1,4 @@
-import { Apartment, Delete, Edit } from '@mui/icons-material';
+import { Group, Delete, Edit } from '@mui/icons-material';
 import {
     ButtonGroup,
     Grid,
@@ -58,7 +58,7 @@ export default function CustomersTable() {
                                                 alignContent: 'center',
                                                 alignItems: 'center'
                                             }}>
-                                            <Apartment
+                                            <Group
                                                 sx={{
                                                     mr: 1
                                                 }}
@@ -137,7 +137,6 @@ export default function CustomersTable() {
                         <FormControl sx={{ mt: 2, mb: 1, ml: 1, minWidth: '140px' }} size="small">
                             <InputLabel>Linhas por página</InputLabel>
                             <Select
-                                // variant="filled"
                                 autoWidth
                                 value={rowsPerPage}
                                 label="rowsPerPage"

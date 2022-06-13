@@ -10,13 +10,16 @@ import {
     Box,
     Grid
 } from '@mui/material';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { forwardRef, useContext } from 'react';
-import { CustomersContext } from '../../../context/CustomersContext';
+import { forwardRef, useContext, useState } from 'react';
+import { RentsContext } from '../../../context/RentsContext';
 
-export default function PublishersForm() {
+export default function RentsForm() {
+    const [value, setValue] = useState(new Date());
+
     const validationSchema = yup.object().shape({
         nome: yup.string().required('Campo Obrigatório'),
         email: yup.string().email('Informe um email válido').required('Campo Obrigatório'),
@@ -24,7 +27,7 @@ export default function PublishersForm() {
         endereco: yup.string().required('Campo Obrigatório')
     });
 
-    const { show, handleClose, saveCustomer, titleForm, customersDefaultFormValues } = useContext(CustomersContext);
+    const { show, handleClose, saveRent, titleForm, rentsDefaultFormValues } = useContext(RentsContext);
 
     const DialogConfig = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -44,19 +47,19 @@ export default function PublishersForm() {
         reset,
         formState: { errors }
     } = useForm({
-        defaultValues: customersDefaultFormValues,
+        defaultValues: rentsDefaultFormValues,
         resolver: yupResolver(validationSchema)
     });
 
     function cancelForm() {
         handleClose();
-        reset(customersDefaultFormValues);
+        reset(rentsDefaultFormValues);
     }
 
     return (
         <DialogConfig open={show} TransitionComponent={Transition} sx={{ padding: '2rem' }}>
             <DialogTitle sx={{ textAlign: 'center', fontSize: '20px' }}>{titleForm}</DialogTitle>
-            <Box component="form" autoComplete="off" onSubmit={handleSubmit(saveCustomer)}>
+            <Box component="form" autoComplete="off" onSubmit={handleSubmit(saveRent)}>
                 <DialogContent>
                     <Grid container>
                         <Grid item xs={12}>
@@ -102,17 +105,14 @@ export default function PublishersForm() {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                label="Endereço"
-                                sx={{ pb: '1rem' }}
-                                name="endereco"
-                                {...register('endereco')}
-                                fullWidth
-                                variant="filled"
-                                error={errors?.endereco}
-                                helperText={errors?.endereco && errors.endereco?.message}
+                            <DesktopDatePicker
+                                label="For desktop"
+                                value={value}
+                                minDate={new Date('2017-01-01')}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
                     </Grid>

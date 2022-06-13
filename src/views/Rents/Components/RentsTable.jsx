@@ -1,4 +1,4 @@
-import { Apartment, Delete, Edit } from '@mui/icons-material';
+import { Handshake, Check, Delete, Edit } from '@mui/icons-material';
 import {
     ButtonGroup,
     Grid,
@@ -18,19 +18,41 @@ import {
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { RentsContext } from '../../../context/RentsContext';
 import Loading from '../../../components/Loading/Loading';
+import moment from 'moment';
 
-export default function PublishersTable() {
+export default function RentsTable() {
     const cols = [
         { title: 'Id', align: 'left' },
-        { title: 'Nome', align: 'left' },
-        { title: 'Cidade', align: 'left' },
+        { title: 'Livro', align: 'left' },
+        { title: 'Cliente', align: 'left' },
+        { title: 'Data de aluguel', align: 'center' },
+        { title: 'Previsão de entrega', align: 'center' },
+        { title: 'Devolução', align: 'center' },
+        { title: 'Status', align: 'center' },
         { title: 'Opções', align: 'center' }
     ];
 
-    const { publishers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
-        useContext(PublishersContext);
+    const { rents, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
+        useContext(RentsContext);
+
+    const formatDate = (date) => {
+        if (date == null) {
+            return '';
+        }
+        return moment(date).format('DD/MM/YYYY');
+    };
+
+    const validateRent = (deliveryForecast, returnDate) => {
+        if (returnDate == null) {
+            return 'Não devolvido';
+        } else if (returnDate.valueOf() > deliveryForecast.valueOf()) {
+            return 'Com atraso';
+        } else {
+            return 'Sem atraso';
+        }
+    };
 
     return (
         <Paper
@@ -56,12 +78,12 @@ export default function PublishersTable() {
                                                 alignContent: 'center',
                                                 alignItems: 'center'
                                             }}>
-                                            <Apartment
+                                            <Handshake
                                                 sx={{
                                                     mr: 1
                                                 }}
                                             />
-                                            Editoras
+                                            Alugueis
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={2}>
@@ -92,15 +114,32 @@ export default function PublishersTable() {
                             ))}
                         </TableRow>
                     </TableHead>
-                    {publishers.length ? (
+                    {rents.length ? (
                         <TableBody>
-                            {publishers.map((row) => (
+                            {rents.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.nome}</TableCell>
-                                    <TableCell>{row.cidade}</TableCell>
+                                    <TableCell>{row.livro.nome}</TableCell>
+                                    <TableCell>{row.usuario.nome}</TableCell>
+                                    <TableCell align="center">{formatDate(row.aluguelFeito)}</TableCell>
+                                    <TableCell align="center">{formatDate(row.previsaoEntrega)}</TableCell>
+                                    <TableCell align="center">{formatDate(row.devolucao)}</TableCell>
+                                    <TableCell align="center">
+                                        {validateRent(row.previsaoEntrega, row.devolucao)}
+                                    </TableCell>
                                     <TableCell align="center">
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
+                                            {row.devolucao != null ? (
+                                                <IconButton
+                                                    color="success"
+                                                    onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
+                                                    <Check />
+                                                </IconButton>
+                                            ) : (
+                                                <IconButton disabled color="success">
+                                                    <Check />
+                                                </IconButton>
+                                            )}
                                             <IconButton
                                                 color="warning"
                                                 onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>

@@ -1,32 +1,28 @@
-import { Grid, Paper, Toolbar, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { motion } from 'framer-motion';
+import RentsContextProvider from '../../context/RentsContext';
+import RentsFilter from './Components/RentsFilter';
+import RentsTable from './Components/RentsTable';
 
 export default function Rents() {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto'
-                }}>
-                <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                    <Grid item xs={12} md={8} lg={9}>
-                        <Paper
-                            sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                height: 240
-                            }}>
-                            <Typography>Rents</Typography>
-                        </Paper>
+            <RentsContextProvider>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        mt: 6
+                    }}>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <Container maxWidth="xl" sx={{ height: 'auto' }}>
+                            <RentsFilter />
+                            <RentsTable />
+                        </Container>
                     </Grid>
-                </Container>
-            </Box>
+                </Box>
+            </RentsContextProvider>
         </motion.div>
     );
 }
