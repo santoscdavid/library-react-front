@@ -40,7 +40,7 @@ export default function PublisherDeleteDialog() {
                     <Button color="success" variant="contained" onClick={closeDeleteConfirm}>
                         Cancelar
                     </Button>
-                    <Button type="submit" variant="outlined" color="error">
+                    <Button type="submit" variant="contained" color="error">
                         Deletar
                     </Button>
                 </DialogActions>

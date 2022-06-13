@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../configs/api';
@@ -21,6 +22,8 @@ function RentsContextProvider({ children }) {
     const [totalPage, setTotalPage] = useState(0);
     const [pageSize, setPageSize] = useState(0);
     const [bookSelectValue, setBookSelectValue] = useState(0);
+    const [customerSelectValue, setCustomerSelectValue] = useState(0);
+    const [previsaoEntrega, setPrevisaoEntrega] = useState(new Date());
 
     const getRents = () => {
         api.get('/aluguel?PageNumber=' + page + '&PageSize=' + rowsPerPage)
@@ -54,6 +57,9 @@ function RentsContextProvider({ children }) {
         if (id) {
             setId('');
         }
+        setBookSelectValue(0);
+        setCustomerSelectValue(0);
+        setPrevisaoEntrega(new Date());
         setShow(false);
     };
 
@@ -96,11 +102,15 @@ function RentsContextProvider({ children }) {
                     toast.error(error);
                 });
         } else {
+            const dateToday = moment().format('YYYY-MM-DD');
+            const previsao = moment(previsaoEntrega).format('YYYY-MM-DD');
+            console.log(previsao);
+
             api.post('/aluguel', {
-                livroId: data.livroId,
-                usuarioId: data.usuarioId,
-                aluguelFeito: data.aluguelFeito,
-                previsaoEntrega: data.previsaoEntrega
+                livroId: bookSelectValue,
+                usuarioId: bookSelectValue,
+                aluguelFeito: dateToday,
+                previsaoEntrega: previsao
             })
                 .then((response) => {
                     if (response !== null) {
@@ -217,7 +227,11 @@ function RentsContextProvider({ children }) {
                 rowsPerPage,
                 handleChangePage,
                 handleChangeRowsPerPage,
-                handleSearch
+                handleSearch,
+                customerSelectValue,
+                setCustomerSelectValue,
+                previsaoEntrega,
+                setPrevisaoEntrega
             }}>
             {children}
             {show && <RentsForm />}
