@@ -1,16 +1,16 @@
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../configs/api';
-import BookDeleteDialog from '../views/Books/Components/BookDeleteDialog';
-import BookForm from '../views/Books/Components/BookForm';
+import CustomersDeleteDialog from '../views/Customers/Components/CustomersDeleteDialog';
+import CustomersForm from '../views/Customers/Components/CustomersForm';
 
-export const BooksContext = createContext();
+export const CustomersContext = createContext();
 
-function BooksContextProvider({ children }) {
-    const [books, setBooks] = useState([]);
-    const [bookDefaultFormValues, setBookDefaultFormValues] = useState({});
+function CustomersContextProvider({ children }) {
+    const [customers, setCustomers] = useState([]);
+    const [customersDefaultFormValues, setCustomersDefaultFormValues] = useState({});
     const [show, setShow] = useState(false);
-    const [bookDeleteValues, setBookDeleteValues] = useState({});
+    const [customersDeleteValues, setCustomersDeleteValues] = useState({});
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [titleForm, setTitleForm] = useState('');
     const [id, setId] = useState('');
@@ -20,19 +20,18 @@ function BooksContextProvider({ children }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [pageSize, setPageSize] = useState(0);
-    const [selectValue, setSelectValue] = useState(0);
 
-    const getBooks = () => {
-        api.get('/livro?PageNumber=' + page + '&PageSize=' + rowsPerPage)
+    const getCustomers = () => {
+        api.get('/usuario?PageNumber=' + page + '&PageSize=' + rowsPerPage)
             .then((res) => {
-                const livros = res.data;
+                const usuarios = res.data;
                 var paginate = JSON.parse(res.headers.pagination);
 
                 setCountItens(paginate.totalCount);
                 setCurrentPage(paginate.currentPage);
                 setTotalPage(paginate.totalPage);
                 setPageSize(paginate.pageSize);
-                setBooks(livros);
+                setCustomers(usuarios);
             })
             .catch(() => {
                 toast.error('Não foi possivel conectar com o banco de dados');
@@ -40,53 +39,50 @@ function BooksContextProvider({ children }) {
     };
 
     useEffect(() => {
-        getBooks();
+        getCustomers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handlerShow = () => {
-        setTitleForm('Novo Livro');
+        setTitleForm('Novo Cliente');
         setShow(true);
     };
 
     const handleClose = () => {
-        setBookDefaultFormValues({});
+        setCustomersDefaultFormValues({});
         if (id) {
             setId('');
         }
         setShow(false);
     };
 
-    const handlerEdit = (id, nome, editora, autor, lancamento, quantidade) => {
-        const book = {
-            nome,
-            autor,
-            editora,
-            lancamento,
-            quantidade
+    const handlerEdit = (id, nome, email, cidade, endereco) => {
+        const cliente = {
+            nome: nome,
+            email: email,
+            cidade: cidade,
+            endereco: endereco
         };
-        console.log(book);
-        setBookDefaultFormValues(book);
+        console.log(cliente);
+        setCustomersDefaultFormValues(cliente);
         setId(id);
-        setSelectValue(book.editora);
-        setTitleForm('Editar Livro');
+        setTitleForm('Editar Cliente');
         setShow(true);
     };
 
-    const saveBook = (data) => {
+    const saveCustomer = (data) => {
         if (id) {
-            api.put('/livro/' + id, {
+            api.put('/usuario/' + id, {
                 id: id,
                 nome: data.nome,
-                autor: data.autor,
-                editoraId: data.editora,
-                lancamento: data.lancamento,
-                quantidade: data.quantidade
+                email: data.email,
+                cidade: data.cidade,
+                endereco: data.endereco
             })
                 .then((response) => {
                     if (response !== null) {
                         handleClose();
-                        getBooks();
+                        getCustomers();
                         toast.success('Editado com sucesso!');
                     }
                 })
@@ -96,19 +92,17 @@ function BooksContextProvider({ children }) {
                     toast.error(error);
                 });
         } else {
-            api.post('livro', {
+            api.post('usuario', {
                 nome: data.nome,
-                autor: data.autor,
-                editoraId: selectValue,
-                lancamento: data.lancamento,
-                quantidade: data.quantidade
+                email: data.email,
+                cidade: data.cidade,
+                endereco: data.endereco
             })
                 .then((response) => {
                     if (response !== null) {
                         handleClose();
-                        getBooks();
+                        getCustomers();
                         toast.success('Salvo com sucesso!');
-                        setSelectValue(0);
                     }
                 })
                 .catch((res) => {
@@ -119,11 +113,11 @@ function BooksContextProvider({ children }) {
         }
     };
 
-    const handlerDelete = (bookId) => {
+    const handlerDelete = (customersId) => {
         const deleteValues = {
-            id: bookId
+            id: customersId
         };
-        setBookDeleteValues(deleteValues);
+        setCustomersDeleteValues(deleteValues);
         setShowDeleteDialog(true);
     };
 
@@ -131,16 +125,16 @@ function BooksContextProvider({ children }) {
         if (id) {
             setId('');
         }
-        setBookDeleteValues({});
+        setCustomersDeleteValues({});
         setShowDeleteDialog(false);
     };
 
     const deleteBook = () => {
-        api.delete('livro/' + bookDeleteValues.id)
+        api.delete('usuario/' + customersDeleteValues.id)
             .then((response) => {
                 if (response !== null) {
                     closeDeleteConfirm();
-                    getBooks();
+                    getCustomers();
                     toast.success('Deletado(a) com sucesso!');
                 }
             })
@@ -152,8 +146,8 @@ function BooksContextProvider({ children }) {
     };
 
     const paginate = (pag, row) => {
-        api.get('/livro?PageNumber=' + pag + '&PageSize=' + row).then((res) => {
-            const livros = res.data;
+        api.get('/usuario?PageNumber=' + pag + '&PageSize=' + row).then((res) => {
+            const usuarios = res.data;
             var page = JSON.parse(res.headers.pagination);
 
             setCountItens(page.totalCount);
@@ -161,13 +155,13 @@ function BooksContextProvider({ children }) {
             setTotalPage(page.totalPage);
             setPageSize(page.pageSize);
 
-            setBooks(livros);
+            setCustomers(usuarios);
         });
     };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        getBooks();
+        getCustomers();
     };
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(event.target.value);
@@ -177,15 +171,17 @@ function BooksContextProvider({ children }) {
 
     const handleSearch = (data) => {
         api.get(
-            '/livro?PageNumber=1&PageSize=100&Nome=' +
+            '/usuario?PageNumber=1&PageSize=100&Nome=' +
                 data.nome +
-                '&Autor=' +
-                data.autor +
-                '&Lancamento=' +
-                data.lancamento
+                '&email=' +
+                data.email +
+                '&Cidade=' +
+                data.cidade +
+                '&Endereco=' +
+                data.endereco
         )
             .then((res) => {
-                setBooks(res.data);
+                setCustomers(res.data);
             })
             .catch(() => {
                 toast.error('Não foi possível se conectar com o banco de dados');
@@ -193,12 +189,12 @@ function BooksContextProvider({ children }) {
     };
 
     return (
-        <BooksContext.Provider
+        <CustomersContext.Provider
             value={{
-                books,
-                getBooks,
+                customers,
+                getCustomers,
                 showDeleteDialog,
-                bookDefaultFormValues,
+                customersDefaultFormValues,
                 handlerEdit,
                 handlerDelete,
                 handlerShow,
@@ -206,24 +202,22 @@ function BooksContextProvider({ children }) {
                 closeDeleteConfirm,
                 show,
                 titleForm,
-                saveBook,
+                saveCustomer,
                 deleteBook,
                 totalCount,
                 currentPage,
                 totalPage,
                 pageSize,
-                selectValue,
-                setSelectValue,
                 rowsPerPage,
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleSearch
             }}>
             {children}
-            {show && <BookForm />}
-            {showDeleteDialog && <BookDeleteDialog />}
-        </BooksContext.Provider>
+            {show && <CustomersForm />}
+            {showDeleteDialog && <CustomersDeleteDialog />}
+        </CustomersContext.Provider>
     );
 }
 
-export default BooksContextProvider;
+export default CustomersContextProvider;

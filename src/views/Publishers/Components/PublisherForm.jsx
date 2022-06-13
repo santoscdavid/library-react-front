@@ -64,6 +64,7 @@ export default function PublishersForm() {
                         {...register('nome')}
                         fullWidth
                         variant="filled"
+                        error={errors?.nome}
                         helperText={errors?.nome && errors.nome?.message}
                     />
                     <TextField
@@ -75,6 +76,7 @@ export default function PublishersForm() {
                         {...register('cidade')}
                         fullWidth
                         variant="filled"
+                        error={errors?.cidade}
                         helperText={errors?.cidade && errors.cidade?.message}
                     />
                 </DialogContent>

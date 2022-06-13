@@ -106,6 +106,7 @@ export default function PublishersForm() {
                                 {...register('nome')}
                                 fullWidth
                                 variant="filled"
+                                error={errors?.nome}
                                 helperText={errors?.nome && errors.nome?.message}
                             />
                         </Grid>
@@ -119,11 +120,12 @@ export default function PublishersForm() {
                                 {...register('autor')}
                                 fullWidth
                                 variant="filled"
+                                error={errors?.autor}
                                 helperText={errors?.autor && errors.autor?.message}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl variant="filled" fullWidth>
+                            <FormControl variant="filled" fullWidth error={errors?.editora}>
                                 <InputLabel id="editora">Editora</InputLabel>
                                 <Select
                                     fullWidth
@@ -151,6 +153,7 @@ export default function PublishersForm() {
                                 {...register('lancamento')}
                                 fullWidth
                                 variant="filled"
+                                error={errors?.lancamento}
                                 helperText={errors?.lancamento && errors.lancamento?.message}
                             />
                         </Grid>
