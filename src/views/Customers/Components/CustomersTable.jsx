@@ -1,4 +1,4 @@
-import { Apartment, Delete, Edit } from '@mui/icons-material';
+import { Group, Delete, Edit } from '@mui/icons-material';
 import {
     ButtonGroup,
     Grid,
@@ -18,19 +18,21 @@ import {
 } from '@mui/material';
 import AddButtom from '../../../components/AddButton/AddButton';
 import { useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { CustomersContext } from '../../../context/CustomersContext';
 import Loading from '../../../components/Loading/Loading';
 
-export default function PublishersTable() {
+export default function CustomersTable() {
     const cols = [
         { title: 'Id', align: 'left' },
         { title: 'Nome', align: 'left' },
+        { title: 'Email', align: 'left' },
         { title: 'Cidade', align: 'left' },
+        { title: 'Endereço', align: 'left' },
         { title: 'Opções', align: 'center' }
     ];
 
-    const { publishers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
-        useContext(PublishersContext);
+    const { customers, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
+        useContext(CustomersContext);
 
     return (
         <Paper
@@ -56,12 +58,12 @@ export default function PublishersTable() {
                                                 alignContent: 'center',
                                                 alignItems: 'center'
                                             }}>
-                                            <Apartment
+                                            <Group
                                                 sx={{
                                                     mr: 1
                                                 }}
                                             />
-                                            Editoras
+                                            Clientes
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={2}>
@@ -92,23 +94,25 @@ export default function PublishersTable() {
                             ))}
                         </TableRow>
                     </TableHead>
-                    {publishers.length ? (
+                    {customers.length ? (
                         <TableBody>
-                            {publishers.map((row) => (
+                            {customers.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.nome}</TableCell>
+                                    <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.cidade}</TableCell>
+                                    <TableCell>{row.endereco}</TableCell>
                                     <TableCell align="center">
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
                                             <IconButton
                                                 color="warning"
-                                                onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
+                                                onClick={() =>
+                                                    handlerEdit(row.id, row.nome, row.email, row.cidade, row.endereco)
+                                                }>
                                                 <Edit />
                                             </IconButton>
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => handlerDelete(row.id, row.nome, row.cidade)}>
+                                            <IconButton color="error" onClick={() => handlerDelete(row.id)}>
                                                 <Delete />
                                             </IconButton>
                                         </ButtonGroup>
@@ -133,7 +137,6 @@ export default function PublishersTable() {
                         <FormControl sx={{ mt: 2, mb: 1, ml: 1, minWidth: '140px' }} size="small">
                             <InputLabel>Linhas por página</InputLabel>
                             <Select
-                                // variant="filled"
                                 autoWidth
                                 value={rowsPerPage}
                                 label="rowsPerPage"

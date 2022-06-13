@@ -1,16 +1,16 @@
 import { createContext, useEffect, useState } from 'react';
-import api from '../configs/api';
 import { toast } from 'react-toastify';
-import PublishersForm from '../views/Publishers/Components/PublisherForm';
-import PublisherDeleteDialog from '../views/Publishers/Components/PublisherDeleteDialog';
+import api from '../configs/api';
+import CustomersDeleteDialog from '../views/Customers/Components/CustomersDeleteDialog';
+import CustomersForm from '../views/Customers/Components/CustomersForm';
 
-export const PublishersContext = createContext();
+export const CustomersContext = createContext();
 
-function PublishersContextProvider({ children }) {
-    const [publishers, setPublishers] = useState([]);
-    const [publisherDefaultFormValues, setPublisherDefaultFormValues] = useState({});
-    const [publisherDeleteValues, setPublisherDeleteValues] = useState({});
+function CustomersContextProvider({ children }) {
+    const [customers, setCustomers] = useState([]);
+    const [customersDefaultFormValues, setCustomersDefaultFormValues] = useState({});
     const [show, setShow] = useState(false);
+    const [customersDeleteValues, setCustomersDeleteValues] = useState({});
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [titleForm, setTitleForm] = useState('');
     const [id, setId] = useState('');
@@ -21,80 +21,87 @@ function PublishersContextProvider({ children }) {
     const [totalPage, setTotalPage] = useState(0);
     const [pageSize, setPageSize] = useState(0);
 
-    const getPublishers = () => {
-        api.get('/editora?PageNumber=' + page + '&PageSize=' + rowsPerPage)
+    const getCustomers = () => {
+        api.get('/usuario?PageNumber=' + page + '&PageSize=' + rowsPerPage)
             .then((res) => {
-                const editoras = res.data;
+                const usuarios = res.data;
                 var paginate = JSON.parse(res.headers.pagination);
 
                 setCountItens(paginate.totalCount);
                 setCurrentPage(paginate.currentPage);
                 setTotalPage(paginate.totalPage);
                 setPageSize(paginate.pageSize);
-
-                setPublishers(editoras);
+                setCustomers(usuarios);
             })
-            .catch((res) => {
+            .catch(() => {
                 toast.error('Não foi possivel conectar com o banco de dados');
             });
     };
 
     useEffect(() => {
-        getPublishers();
+        getCustomers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handlerShow = () => {
-        setTitleForm('Nova Editora');
+        setTitleForm('Novo Cliente');
         setShow(true);
     };
 
     const handleClose = () => {
-        setPublisherDefaultFormValues({});
+        setCustomersDefaultFormValues({});
         if (id) {
             setId('');
         }
         setShow(false);
     };
 
-    const handlerEdit = (publisherId, publisherName, publisherCity) => {
-        const publisher = {
-            nome: publisherName,
-            cidade: publisherCity
+    const handlerEdit = (id, nome, email, cidade, endereco) => {
+        const cliente = {
+            nome: nome,
+            email: email,
+            cidade: cidade,
+            endereco: endereco
         };
-        setPublisherDefaultFormValues(publisher);
-        setId(publisherId);
-        setTitleForm('Editar Usuário');
+        console.log(cliente);
+        setCustomersDefaultFormValues(cliente);
+        setId(id);
+        setTitleForm('Editar Cliente');
         setShow(true);
     };
 
-    const savePublisher = (data) => {
+    const saveCustomer = (data) => {
         if (id) {
-            api.put('/editora/' + id, {
+            api.put('/usuario/' + id, {
                 id: id,
                 nome: data.nome,
-                cidade: data.cidade
+                email: data.email,
+                cidade: data.cidade,
+                endereco: data.endereco
             })
                 .then((response) => {
                     if (response !== null) {
                         handleClose();
-                        getPublishers();
+                        getCustomers();
                         toast.success('Editado com sucesso!');
                     }
                 })
-                .catch((response) => {
-                    const error = response.data.error;
+                .catch((res) => {
+                    console.log(res.response.data.errors);
+                    const error = res.response.data.error;
                     toast.error(error);
                 });
         } else {
-            api.post('editora', {
+            api.post('usuario', {
                 nome: data.nome,
-                cidade: data.cidade
+                email: data.email,
+                cidade: data.cidade,
+                endereco: data.endereco
             })
                 .then((response) => {
                     if (response !== null) {
                         handleClose();
-                        getPublishers();
+                        getCustomers();
                         toast.success('Salvo com sucesso!');
                     }
                 })
@@ -106,13 +113,11 @@ function PublishersContextProvider({ children }) {
         }
     };
 
-    const handlerDelete = (publisherId, publisherName, publisherCity) => {
+    const handlerDelete = (customersId) => {
         const deleteValues = {
-            id: publisherId,
-            nome: publisherName,
-            cidade: publisherCity
+            id: customersId
         };
-        setPublisherDeleteValues(deleteValues);
+        setCustomersDeleteValues(deleteValues);
         setShowDeleteDialog(true);
     };
 
@@ -120,16 +125,17 @@ function PublishersContextProvider({ children }) {
         if (id) {
             setId('');
         }
-        setPublisherDeleteValues({});
+        setCustomersDeleteValues({});
         setShowDeleteDialog(false);
     };
-    const deletePublisher = () => {
-        api.delete('editora/' + publisherDeleteValues.id)
+
+    const deleteBook = () => {
+        api.delete('usuario/' + customersDeleteValues.id)
             .then((response) => {
                 if (response !== null) {
                     closeDeleteConfirm();
-                    getPublishers();
-                    toast.success('Deletada com sucesso!');
+                    getCustomers();
+                    toast.success('Deletado(a) com sucesso!');
                 }
             })
             .catch((response) => {
@@ -140,8 +146,8 @@ function PublishersContextProvider({ children }) {
     };
 
     const paginate = (pag, row) => {
-        api.get('/editora?PageNumber=' + pag + '&PageSize=' + row).then((res) => {
-            const editoras = res.data;
+        api.get('/usuario?PageNumber=' + pag + '&PageSize=' + row).then((res) => {
+            const usuarios = res.data;
             var page = JSON.parse(res.headers.pagination);
 
             setCountItens(page.totalCount);
@@ -149,59 +155,69 @@ function PublishersContextProvider({ children }) {
             setTotalPage(page.totalPage);
             setPageSize(page.pageSize);
 
-            setPublishers(editoras);
+            setCustomers(usuarios);
         });
     };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        getPublishers();
+        getCustomers();
     };
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(event.target.value);
         setPage(1);
-        // getPublishers();
         paginate(1, event.target.value);
     };
 
     const handleSearch = (data) => {
-        api.get('/editora?PageNumber=1&PageSize=100&Nome=' + data.nome + '&Cidade=' + data.cidade).then((res) => {
-            setPublishers(res.data);
-        });
+        api.get(
+            '/usuario?PageNumber=1&PageSize=100&Nome=' +
+                data.nome +
+                '&email=' +
+                data.email +
+                '&Cidade=' +
+                data.cidade +
+                '&Endereco=' +
+                data.endereco
+        )
+            .then((res) => {
+                setCustomers(res.data);
+            })
+            .catch(() => {
+                toast.error('Não foi possível se conectar com o banco de dados');
+            });
     };
 
     return (
-        <PublishersContext.Provider
+        <CustomersContext.Provider
             value={{
-                publishers,
-                getPublishers,
-                show,
-                handlerShow,
-                handleSearch,
-                page,
-                rowsPerPage,
-                handlerEdit,
-                handleClose,
-                totalCount,
-                savePublisher,
-                setCountItens,
-                titleForm,
-                publisherDefaultFormValues,
-                handleChangePage,
-                handleChangeRowsPerPage,
-                handlerDelete,
+                customers,
+                getCustomers,
                 showDeleteDialog,
-                deletePublisher,
+                customersDefaultFormValues,
+                handlerEdit,
+                handlerDelete,
+                handlerShow,
+                handleClose,
                 closeDeleteConfirm,
+                show,
+                titleForm,
+                saveCustomer,
+                deleteBook,
+                totalCount,
                 currentPage,
                 totalPage,
-                pageSize
+                pageSize,
+                rowsPerPage,
+                handleChangePage,
+                handleChangeRowsPerPage,
+                handleSearch
             }}>
             {children}
-            {show && <PublishersForm />}
-            {showDeleteDialog && <PublisherDeleteDialog />}
-        </PublishersContext.Provider>
+            {show && <CustomersForm />}
+            {showDeleteDialog && <CustomersDeleteDialog />}
+        </CustomersContext.Provider>
     );
 }
 
-export default PublishersContextProvider;
+export default CustomersContextProvider;

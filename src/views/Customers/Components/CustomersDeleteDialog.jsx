@@ -10,10 +10,10 @@ import {
     Slide
 } from '@mui/material';
 import { forwardRef, useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { CustomersContext } from '../../../context/CustomersContext';
 
-export default function PublisherDeleteDialog() {
-    const { showDeleteDialog, deletePublisher, closeDeleteConfirm } = useContext(PublishersContext);
+export default function CustomersDeleteDialog() {
+    const { showDeleteDialog, deleteBook, closeDeleteConfirm } = useContext(CustomersContext);
 
     const DialogConfig = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -29,12 +29,20 @@ export default function PublisherDeleteDialog() {
     });
 
     return (
-        <DialogConfig open={showDeleteDialog} TransitionComponent={Transition} sx={{ padding: '3rem' }}>
-            <DialogTitle sx={{ textAlign: 'center', fontSize: '20px' }}>Deletar Editora</DialogTitle>
-            <Box component="form" onSubmit={deletePublisher}>
+        <DialogConfig
+            maxWidth="200px"
+            open={showDeleteDialog}
+            TransitionComponent={Transition}
+            sx={{ padding: '3rem' }}>
+            <DialogTitle sx={{ textAlign: 'center', fontSize: '20px' }}>Deletar Cliente</DialogTitle>
+            <Box component="form" onSubmit={deleteBook}>
                 <DialogContent sx={{ textAlign: 'center', mb: 2 }}>
-                    <Typography>Deseja realmente deletar essa editora?</Typography>
-                    <Typography>Todas relações com essa editora serão excluídas.</Typography>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Deseja realmente deletar esse cliente?
+                    </Typography>
+                    <Typography variant="subtitle2">
+                        Todas relações com esse cliente serão excluídas. <br /> Exceto se ele estiver em um aluguel.
+                    </Typography>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', mr: 2 }}>
                     <Button color="success" variant="contained" onClick={closeDeleteConfirm}>

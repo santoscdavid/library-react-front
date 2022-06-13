@@ -10,10 +10,10 @@ import {
     Slide
 } from '@mui/material';
 import { forwardRef, useContext } from 'react';
-import { PublishersContext } from '../../../context/PublishersContext';
+import { RentsContext } from '../../../context/RentsContext';
 
-export default function PublisherDeleteDialog() {
-    const { showDeleteDialog, deletePublisher, closeDeleteConfirm } = useContext(PublishersContext);
+export default function RentsDeleteDialog() {
+    const { showDeleteDialog, deleteRent, closeDeleteConfirm } = useContext(RentsContext);
 
     const DialogConfig = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -29,12 +29,18 @@ export default function PublisherDeleteDialog() {
     });
 
     return (
-        <DialogConfig open={showDeleteDialog} TransitionComponent={Transition} sx={{ padding: '3rem' }}>
-            <DialogTitle sx={{ textAlign: 'center', fontSize: '20px' }}>Deletar Editora</DialogTitle>
-            <Box component="form" onSubmit={deletePublisher}>
+        <DialogConfig
+            maxWidth="200px"
+            open={showDeleteDialog}
+            TransitionComponent={Transition}
+            sx={{ padding: '3rem' }}>
+            <DialogTitle sx={{ textAlign: 'center', fontSize: '20px' }}>Deletar Aluguel</DialogTitle>
+            <Box component="form" onSubmit={deleteRent}>
                 <DialogContent sx={{ textAlign: 'center', mb: 2 }}>
-                    <Typography>Deseja realmente deletar essa editora?</Typography>
-                    <Typography>Todas relações com essa editora serão excluídas.</Typography>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Deseja realmente deletar esse aluguel?
+                    </Typography>
+                    <Typography variant="subtitle2">Todas relações com esse aluguel serão excluídas.</Typography>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', mr: 2 }}>
                     <Button color="success" variant="contained" onClick={closeDeleteConfirm}>

@@ -1,15 +1,11 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Theme } from './components/Themes/Theme';
 import { ThemeProvider, Box, Container, CssBaseline, Toolbar } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import DrawerContextProvider from './context/DrawerContext';
 import Appbar from './components/Appbar/Appbar';
 import Drawer from './components/Drawer/Drawer';
-import Dashboard from './views/Dashboard/Dashboard';
-import Publishers from './views/Publishers/Publishers';
-import Books from './views/Books/Books';
-import Rents from './views/Rents/Rents';
-import Customers from './views/Customers/Customers';
+import AnimatedRoutes from './components/AnimatedRoutes/AnimatedRoutes';
 
 function App() {
     return (
@@ -30,15 +26,9 @@ function App() {
                         }}></Box>
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Router>
-                            <Routes>
-                                <Route path="/" exact element={<Dashboard />} />
-                                <Route path="/publishers" exact element={<Publishers />} />
-                                <Route path="/books" exact element={<Books />} />
-                                <Route path="/rents" exact element={<Rents />} />
-                                <Route path="/customers" exact element={<Customers />} />
-                            </Routes>
-                        </Router>
+                        <BrowserRouter>
+                            <AnimatedRoutes />
+                        </BrowserRouter>
                     </Container>
                 </DrawerContextProvider>
                 <ToastContainer
