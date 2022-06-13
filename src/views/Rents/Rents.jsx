@@ -13,10 +13,11 @@ export default function Rents() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        mt: 6
+                        mt: 6,
+                        height: '85vh'
                     }}>
                     <Grid item xs={12} md={12} lg={12}>
-                        <Container maxWidth="xl" sx={{ height: 'auto' }}>
+                        <Container maxWidth="xl" sx={{ height: '100%' }}>
                             <RentsFilter />
                             <RentsTable />
                         </Container>

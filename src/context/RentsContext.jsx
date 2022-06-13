@@ -23,7 +23,7 @@ function RentsContextProvider({ children }) {
     const [pageSize, setPageSize] = useState(0);
     const [bookSelectValue, setBookSelectValue] = useState(0);
     const [customerSelectValue, setCustomerSelectValue] = useState(0);
-    const [previsaoEntrega, setPrevisaoEntrega] = useState(new Date());
+    const [previsaoEntrega, setPrevisaoEntrega] = useState();
 
     const getRents = () => {
         api.get('/aluguel?PageNumber=' + page + '&PageSize=' + rowsPerPage)
@@ -63,18 +63,20 @@ function RentsContextProvider({ children }) {
         setShow(false);
     };
 
-    const handlerEdit = (id, nome, editora, autor, lancamento, quantidade) => {
+    const handlerEdit = (id, livroId, usuarioId, aluguelFeito, previsaoEntrega, devolucao) => {
         const rent = {
-            nome,
-            autor,
-            editora,
-            lancamento,
-            quantidade
+            livroId,
+            usuarioId,
+            aluguelFeito,
+            previsaoEntrega,
+            devolucao
         };
         console.log(rent);
         setRentsDefaultFormValues(rent);
         setId(id);
-        setBookSelectValue(rent.editora);
+        setBookSelectValue(rent.livroId);
+        setCustomerSelectValue(rent.usuarioId);
+        setPrevisaoEntrega(previsaoEntrega);
         setTitleForm('Editar Aluguel');
         setShow(true);
     };

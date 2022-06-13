@@ -34,8 +34,7 @@ export default function RentsTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const { rents, handlerShow, handlerEdit, handlerDelete, handleChangeRowsPerPage, rowsPerPage } =
-        useContext(RentsContext);
+    const { rents, handlerShow, handlerDelete, handleChangeRowsPerPage, rowsPerPage } = useContext(RentsContext);
 
     const formatDate = (date) => {
         if (date == null) {
@@ -129,10 +128,8 @@ export default function RentsTable() {
                                     </TableCell>
                                     <TableCell align="center">
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
-                                            {row.devolucao != null ? (
-                                                <IconButton
-                                                    color="success"
-                                                    onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
+                                            {row.devolucao == null ? (
+                                                <IconButton color="success" onClick={() => alert('devolução')}>
                                                     <Check />
                                                 </IconButton>
                                             ) : (
@@ -140,14 +137,7 @@ export default function RentsTable() {
                                                     <Check />
                                                 </IconButton>
                                             )}
-                                            <IconButton
-                                                color="warning"
-                                                onClick={() => handlerEdit(row.id, row.nome, row.cidade)}>
-                                                <Edit />
-                                            </IconButton>
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => handlerDelete(row.id, row.nome, row.cidade)}>
+                                            <IconButton color="error" onClick={() => handlerDelete(row.id)}>
                                                 <Delete />
                                             </IconButton>
                                         </ButtonGroup>
