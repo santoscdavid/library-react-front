@@ -37,8 +37,7 @@ export default function PublishersTable() {
             sx={{
                 p: 1,
                 display: 'flex',
-                flexDirection: 'column',
-                height: '100%'
+                flexDirection: 'column'
             }}>
             <TableContainer sx={{ maxHeight: 'auto', overflow: 'auto' }}>
                 <Table stickyHeader size="small">
