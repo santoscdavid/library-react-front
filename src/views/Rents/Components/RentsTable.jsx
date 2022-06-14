@@ -1,4 +1,4 @@
-import { Handshake, Check, Delete, Edit } from '@mui/icons-material';
+import { Handshake, Check, Delete } from '@mui/icons-material';
 import {
     ButtonGroup,
     Grid,
