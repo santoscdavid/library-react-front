@@ -64,8 +64,11 @@ export default function PizzaChart() {
     };
 
     return (
-        <Card sx={{ minWidth: 275, m: 1, p: 1 }}>
-            <CardHeader title="Média dos status de Aluguel" />
+        <Card sx={{ minWidth: 250, m: 1, p: 1 }}>
+            <CardHeader
+                title="Média dos status de Aluguel"
+                titleTypographyProps={{ fontSize: '1rem', fontWeight: 'Bold' }}
+            />
             <CardContent>
                 <Chart options={donutChart} series={donutChart.series} type="donut" width={450} height={350} />
             </CardContent>
