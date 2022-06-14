@@ -15,7 +15,7 @@ export default function Publishers() {
                         mt: 6
                     }}>
                     <Grid item xs={12} md={12} lg={12}>
-                        <Container maxWidth="xl" sx={{ height: 'auto' }}>
+                        <Container maxWidth="xl" sx={{ height: '85vh' }}>
                             <PublishersFilter />
                             <PublishersTable />
                         </Container>

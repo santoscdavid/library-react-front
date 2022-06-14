@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import api from '../../../configs/api';
+import api from '../../../../configs/api';
 
 export default function PizzaChart() {
     const [rents, setRents] = useState([]);

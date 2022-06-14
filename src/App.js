@@ -10,39 +10,39 @@ import AnimatedRoutes from './components/AnimatedRoutes/AnimatedRoutes';
 function App() {
     return (
         <ThemeProvider theme={Theme}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <DrawerContextProvider>
-                    <Appbar />
-                    <Drawer />
-                    <Box
-                        component="main"
-                        sx={{
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-                            flexGrow: 1,
-                            height: 'auto',
-                            overflow: 'auto'
-                        }}></Box>
-                    <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <BrowserRouter>
+            <BrowserRouter>
+                <Box sx={{ display: 'flex' }}>
+                    <CssBaseline />
+                    <DrawerContextProvider>
+                        <Appbar />
+                        <Drawer />
+                        <Box
+                            component="main"
+                            sx={{
+                                backgroundColor: (theme) =>
+                                    theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+                                flexGrow: 1,
+                                height: 'auto',
+                                overflow: 'auto'
+                            }}></Box>
+                        <Toolbar />
+                        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                             <AnimatedRoutes />
-                        </BrowserRouter>
-                    </Container>
-                </DrawerContextProvider>
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
-            </Box>
+                        </Container>
+                    </DrawerContextProvider>
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
+                </Box>
+            </BrowserRouter>
         </ThemeProvider>
     );
 }

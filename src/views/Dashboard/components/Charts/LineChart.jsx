@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import Chart from 'react-apexcharts';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import api from '../../../configs/api';
+import api from '../../../../configs/api';
 
 export default function LineChart() {
     const [data, setData] = useState([]);
@@ -16,7 +16,7 @@ export default function LineChart() {
             for (let i = 0; i < dados.length; i++) {
                 if (
                     i < dados.length - 1 &&
-                    moment(dados[i].aluguelFeito).format('yyyy-mm-dd') ==
+                    moment(dados[i].aluguelFeito).format('yyyy-mm-dd') ===
                         moment(dados[i + 1].aluguelFeito).format('yyyy-mm-dd')
                 ) {
                     total++;
