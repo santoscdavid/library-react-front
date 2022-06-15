@@ -2,8 +2,9 @@ import { useContext } from 'react';
 import { DrawerContext } from '../../context/DrawerContext';
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
-import { Badge, IconButton, Toolbar, Typography } from '@mui/material';
+import { Badge, Button, IconButton, Toolbar } from '@mui/material';
 import { AccountCircle, Bookmark, Menu } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 export default function Appbar() {
     const { open, setOpen } = useContext(DrawerContext);
@@ -48,10 +49,11 @@ export default function Appbar() {
                     }}>
                     <Menu />
                 </IconButton>
-                <Bookmark />
-                <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                    WDA Livraria
-                </Typography>
+                <Link to="/dashboard" className="LinkNavbar">
+                    <Button variant="text" size="large" color="inherit" startIcon={<Bookmark />} sx={{ flexGrow: 1 }}>
+                        WDA Livraria
+                    </Button>
+                </Link>
                 <IconButton color="inherit">
                     <Badge color="secondary">
                         <AccountCircle />

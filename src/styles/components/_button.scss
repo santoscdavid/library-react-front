@@ -1,4 +1,15 @@
+.LinkDefault {
+    text-decoration: none;
+}
 .LinkCustom {
     margin-left: auto;
     text-decoration: none;
+}
+.LinkNavbar {
+    color: aliceblue;
+    font-weight: bold;
+    white-space: nowrap;
+    text-decoration: none;
+
+    flex-grow: 1;
 }
