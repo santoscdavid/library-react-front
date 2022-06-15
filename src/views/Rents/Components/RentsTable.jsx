@@ -34,7 +34,8 @@ export default function RentsTable() {
         { title: 'Opções', align: 'center' }
     ];
 
-    const { rents, handlerShow, handlerDelete, handleChangeRowsPerPage, rowsPerPage } = useContext(RentsContext);
+    const { rents, handlerShow, handlerDelete, handleChangeRowsPerPage, rowsPerPage, completeRent } =
+        useContext(RentsContext);
 
     const formatDate = (date) => {
         if (date == null) {
@@ -129,7 +130,7 @@ export default function RentsTable() {
                                     <TableCell align="center">
                                         <ButtonGroup color="secondary" size="small" variant="outlined">
                                             {row.devolucao == null ? (
-                                                <IconButton color="success" onClick={() => alert('devolução')}>
+                                                <IconButton color="success" onClick={() => completeRent(row)}>
                                                     <Check />
                                                 </IconButton>
                                             ) : (

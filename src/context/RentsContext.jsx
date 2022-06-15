@@ -106,7 +106,6 @@ function RentsContextProvider({ children }) {
         } else {
             const dateToday = moment().format('YYYY-MM-DD');
             const previsao = moment(previsaoEntrega).format('YYYY-MM-DD');
-            console.log(previsao);
 
             api.post('/aluguel', {
                 livroId: bookSelectValue,
@@ -203,6 +202,26 @@ function RentsContextProvider({ children }) {
             });
     };
 
+    const completeRent = (data) => {
+        const array = {
+            id: data.id,
+            livroId: data.livro.id,
+            usuarioId: data.usuario.id,
+            aluguelFeito: data.aluguelFeito,
+            previsaoEntrega: data.previsaoEntrega,
+            devolucao: moment().format('YYYY-MM-DD')
+        };
+        api.put('/aluguel/' + array.id, array)
+            .then((res) => {
+                toast.success('Livro entregue com sucesso');
+                getRents();
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                toast.error(err.response.data.error);
+            });
+    };
+
     return (
         <RentsContext.Provider
             value={{
@@ -233,7 +252,8 @@ function RentsContextProvider({ children }) {
                 customerSelectValue,
                 setCustomerSelectValue,
                 previsaoEntrega,
-                setPrevisaoEntrega
+                setPrevisaoEntrega,
+                completeRent
             }}>
             {children}
             {show && <RentsForm />}
