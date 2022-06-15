@@ -1,13 +1,13 @@
-import * as React from 'react';
+import { Fragment } from 'react';
+import { Apartment, Group, Handshake, MenuBook } from '@mui/icons-material';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { Apartment, Group, Handshake, MenuBook } from '@mui/icons-material';
 
 export const mainListItems = (
-    <React.Fragment>
-        <ListItemButton to="/">
+    <Fragment>
+        <ListItemButton to="/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
@@ -37,5 +37,5 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Alugueis" />
         </ListItemButton>
-    </React.Fragment>
+    </Fragment>
 );

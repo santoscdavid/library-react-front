@@ -1,0 +1,23 @@
+.BackgroundLogin {
+    left: 0;
+    top: 0;
+
+    display: flex;
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+    background-color: white;
+
+    z-index: 5000;
+}
+
+.ImageLogin {
+    background-image: url(https://source.unsplash.com/random);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: grey;
+    width: 60%;
+    height: 100%;
+}
