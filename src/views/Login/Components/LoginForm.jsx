@@ -1,28 +1,32 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LockOutlined } from '@mui/icons-material';
 import { Avatar, Box, Grid, Link, TextField, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import api from '../../../configs/api';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../../context/AuthContext';
 
 export default function LoginForm() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const { setIsAuth } = useContext(AuthContext);
 
     const handleSubmit = (e) => {
         setLoading(true);
         e.preventDefault();
-        const data = new FormData(e.currentTarget);
+        const user = new FormData(e.currentTarget);
 
-        api.post('/admin/login', { username: data.get('username'), password: data.get('password') })
+        api.post('/admin/login', { username: user.get('username'), password: user.get('password') })
             .then((res) => {
+                setIsAuth(true);
                 setLoading(false);
-                navigate('/');
+                navigate('/dashboard');
             })
             .catch((err) => {
                 toast.error(err.response.data.error);
                 setLoading(false);
+                setIsAuth(false);
             });
     };
 
